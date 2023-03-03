@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Subscription", type: :request do
+RSpec.describe "Create Subscription", type: :request do
   before :all do
     @customer_1 = Customer.new(first_name: 'Fred', last_name: 'Williams', email: 'fredw@example.com', address: '123 Example Place')
     @tea_1 = Tea.new(title: 'Spicy Chai', description: 'Extra spicy with cinnamon.', temperature: 212, brew_time: 4)
