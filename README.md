@@ -1,402 +1,199 @@
 <div align="center">
-  <h1>Streamr API</h1>
-  <h1>-WIP-</h1>
+  <h1>Take-Home API</h1>
 </div>
 
 ## Table of Contents
 - [Project Overview](#project-overview)
-- [Learning Goals](#learning-goals)
+- [Schema](#schema)
 - [Setup](#setup)
 - [Endpoints](#endpoints)
-- [Schema](#schema)
 - [Gems](#gems)
 
 
 ## Project Overview
-This API was built over the course of several days as practice for completing take-home technical challenges found in interviews. The 
+This API was built over the course of several days (8 hours total) as practice for completing take-home technical challenges found in interviews. The objective of this challenge was to create an API and relational database with three endpoints:
+
+- "An endpoint to subscribe a customer to a tea subscription"
+- "An endpoint to cancel a customer’s tea subscription"
+- "An endpoint to see all of a customer’s subsciptions (active and cancelled)"
+
+The tables and their attributes are based off of the guidelines given in the project specifications found [HERE](https://mod4.turing.edu/projects/take_home/take_home_be). All data is fictional for the purpose of this API.
+
+## Schema
+
 
 
 ## Setup
 This application uses Ruby 2.7.2 and Rails 5.2.8.1
 
-1. Clone the repository
+1. Clone the repository (SSH: git@github.com:MadelineMauser/take-home.git)
 2. Navigate into the root directory
 3. Install gem packages: `bundle install`
-4. Setup the database: `rails db:{drop,create,migrate}`
+4. Setup the database: `rails db:{drop,create,migrate,seed}`
 6. Run `rails s` to start the server
 7. You may run the RSpec test suite locally with `bundle exec rspec`
 
 ## Endpoints
-Back End Server: https://streamr_be.herokuapp.com/
+This API was created with REST in mind.
 
-This application uses GraphQL and therefore all requests should be sent as `POST https://streamr-be.herokuapp.com/graphql` with the appropriate query in the request body. 
-
-After setup, non-static documentation is available using GraphiQL, GraphQL's IDE, by visiting `localhost:3000/graphiql`. Static documentation is provided below to give an initial sense of available data.
-
-- ### Fetch Users
+### Create New Subscription
 <details close>
-<summary>Fetch All Users in the Database</summary>
+<summary>This endpoint takes parameters passed through the request body in order to create a new tea subscription for a given customer. Associations between the new subscription and teas are created based on the IDs in the `tea_ids` array.</summary>
 <br>
-Request Body: <br>
-  
-```
-  query {
-    users {
-        id
-        username
-        avatarUrl
-    }
-  }
-```
-  
-JSON Response Example: 
-```json 
-  {
-  "data": {
-    "users": [
-      {
-        "id": "1",
-        "username": "snoop_dogg",
-        "avatarUrl": "https://cdn-icons-png.flaticon.com/512/3940/3940414.png"
-      },
-      {
-        "id": "2",
-        "username": "martha_stewart",
-        "avatarUrl": "https://cdn-icons-png.flaticon.com/512/3940/3940448.png"
-      },
-      {...},
-      {...}
-    ]
-  }
-```
-</details>
+Request: ```POST '/api/v1/customers/{customer_id}/subscriptions'```
+<br>
+Request Body:
+<br>
 
-<details close>
-<summary>Fetch One User From the Database by ID</summary>
-<br>
-Request Body: <br>
-  
-```
-query {
-	fetchUser (
-  	id: 5
-  )
-  {
-    id
-    username
-    avatarUrl
-    watchlistItems {
-      show {
-        tmdbId
-        title
-        releaseYear
-        posterUrl
-        mediaType
-      }
-    }
-    recommendations {
-      id
-      recommendeeId
-      recommender {
-        id
-        username
-        avatarUrl
-      }
-      show {
-        tmdbId
-        title
-        releaseYear
-        rating
-        genres
-        posterUrl
-        mediaType
-      }
-      createdAt
-    }
-  }
+```json
+{ 
+  "subscription": {
+    "title": "Chai Two",
+    "price": "20",
+    "frequency": "3"
+  },
+  "tea_ids": ["1", "2"]
 }
 ```
   
 JSON Response Example: 
-```json 
- {
-  "data": {
-    "fetchUser": {
-      "id": "5",
-      "username": "the_burger_king",
-      "avatarUrl": "https://cdn-icons-png.flaticon.com/512/3940/3940429.png",
-      "watchlistItems": [
-        {
-          "show": {
-            "tmdbId": 76331,
-            "title": "Succession",
-            "releaseYear": "2018",
-            "posterUrl": "https://image.tmdb.org/t/p/w500/e2X32jUfJ2kb4QtNg3WCTnLyGxD.jpg",
-            "mediaType": "tv"
-          }
-        },
-        {..},
-        {..}
-      ],
-      "recommendations": [
-        {
-          "id": "5",
-          "recommendeeId": 5,
-          "recommender": {
-            "id": "4",
-            "username": "sean_not_shaun",
-            "avatarUrl": "https://cdn-icons-png.flaticon.com/512/3940/3940421.png"
-          },
-          "show": {
-            "tmdbId": 4608,
-            "title": "30 Rock",
-            "releaseYear": "2006",
-            "rating": 7.45,
-            "genres": [
-              "Comedy"
+``` json
+  {
+    "data": {
+        "id": "5",
+        "type": "subscription",
+        "attributes": {
+            "title": "Chai Two",
+            "price": 20,
+            "status": "active",
+            "frequency": 3,
+            "customer_id": 1,
+            "teas": [
+                {
+                    "id": 1,
+                    "title": "Spicy Chai",
+                    "description": "Extra spicy with cinnamon.",
+                    "temperature": 212,
+                    "brew_time": 4,
+                    "created_at": "2023-03-06T19:40:39.962Z",
+                    "updated_at": "2023-03-06T19:40:39.962Z"
+                },
+                {
+                    "id": 2,
+                    "title": "Uncommon Chai",
+                    "description": "Uses a secret blend of spices.",
+                    "temperature": 200,
+                    "brew_time": 3,
+                    "created_at": "2023-03-06T19:40:39.966Z",
+                    "updated_at": "2023-03-06T19:40:39.966Z"
+                }
             ],
-            "posterUrl": "https://image.tmdb.org/t/p/w500/k3RbNzPEPW0cmkfkn1xVCTk3Qde.jpg",
-            "mediaType": "tv"
-          },
-          "createdAt": "2023-02-12T19:29:41Z"
-        },
-        {..},
-        {..}
-      ]
+            "created_at": "2023-03-06T20:44:41.687Z",
+            "updated_at": "2023-03-06T20:44:41.687Z"
+        }
     }
-  }
 }
 ```
 </details>
 
-- ### Shows
+### Cancel Subscription
 <details close>
-
-<summary>Search for Shows with Keyword</summary>
+<summary>Calling this endpoints updates the provided subscription's status attribute to 'cancelled.' No records are deleted.</summary>
 <br>
-Request Body: <br>
 
-```
-  query {
-    shows(
-        query: "30 Rock"
-    )
-    {
-        tmdbId
-        title
-        imageUrl
-        yearCreated
-        mediaType
-        rating
-        genres
-    }
+Request: ```PATCH 'api/v1/subscriptions/{subscription_id}/cancel'```
+<br>
+
+JSON Response on Success: 
+```json 
+{
+    "message": "Subscription cancelled"
 }
 ```
+</details>
+
+### View All Subscriptions Belonging to a Customer
+<details close>
+
+<summary>Querying this endpoint will return all subscriptions of the specified customer, including cancelled subscriptions. The subscription attributes contain an array that provides all associated teas.</summary>
+<br>
+Request: ```GET 'api/v1/customers/{customer_id}/subscriptions'```
+<br>
 
 JSON Response Example: 
 ```json 
   {
-  "data": {
-    "shows": [
-      {
-        "tmdbId": 4608,
-        "title": "30 Rock",
-        "imageUrl": "https://image.tmdb.org/t/p/w500//k3RbNzPEPW0cmkfkn1xVCTk3Qde.jpg",
-        "yearCreated": "2006-10-11",
-        "mediaType": "tv",
-        "rating": 7.45,
-        "genres": [
-          "Comedy"
-        ]
-      },
-      {..},
-      {..},
+    "data": [
+        {
+            "id": "1",
+            "type": "subscription",
+            "attributes": {
+                "title": "Chai Delight",
+                "price": 20,
+                "status": "active",
+                "frequency": 3,
+                "customer_id": 1,
+                "teas": [
+                    {
+                        "id": 1,
+                        "title": "Spicy Chai",
+                        "description": "Extra spicy with cinnamon.",
+                        "temperature": 212,
+                        "brew_time": 4,
+                        "created_at": "2023-03-06T19:40:39.962Z",
+                        "updated_at": "2023-03-06T19:40:39.962Z"
+                    },
+                    {
+                        "id": 2,
+                        "title": "Uncommon Chai",
+                        "description": "Uses a secret blend of spices.",
+                        "temperature": 200,
+                        "brew_time": 3,
+                        "created_at": "2023-03-06T19:40:39.966Z",
+                        "updated_at": "2023-03-06T19:40:39.966Z"
+                    }
+                ],
+                "created_at": "2023-03-06T19:40:39.986Z",
+                "updated_at": "2023-03-06T19:40:39.986Z"
+            }
+        },
+        {
+            "id": "2",
+            "type": "subscription",
+            "attributes": {
+                "title": "Dawn Risers",
+                "price": 20,
+                "status": "cancelled",
+                "frequency": 3,
+                "customer_id": 1,
+                "teas": [
+                    {
+                        "id": 3,
+                        "title": "Morning Black",
+                        "description": "Black tea with high caffeine.",
+                        "temperature": 212,
+                        "brew_time": 4,
+                        "created_at": "2023-03-06T19:40:39.968Z",
+                        "updated_at": "2023-03-06T19:40:39.968Z"
+                    },
+                    {
+                        "id": 4,
+                        "title": "English Breakfast",
+                        "description": "Classic breakfast tea.",
+                        "temperature": 200,
+                        "brew_time": 3,
+                        "created_at": "2023-03-06T19:40:39.969Z",
+                        "updated_at": "2023-03-06T19:40:39.969Z"
+                    }
+                ],
+                "created_at": "2023-03-06T19:40:40.000Z",
+                "updated_at": "2023-03-06T19:40:40.000Z"
+            }
+        }
     ]
-  }
-```
-</details>
-
-<details close>
-
-<summary>Fetch Show Details by ID</summary>
-<br>
-  Note: The argument `userId` is only required if the recommendedBy field is present in query <br>
-Request Body: <br>
-
-```
-  query {
-    showDetails(
-        tmdbId: 4608
-        userId: 1
-      	mediaType: "tv"
-    )
-    {
-        tmdbId
-        title
-        releaseYear
-        streamingService {
-          logoPath
-          providerName
-        }
-        posterUrl
-        genres
-        rating
-        summary
-      	mediaType
-        recommendedBy {
-                id
-                username
-                avatarUrl
-        }
-    	 
-    }
-}
-```
-
-JSON Response Example: 
-```json 
-  {
-  "data": {
-    "showDetails": {
-      "tmdbId": 4608,
-      "title": "30 Rock",
-      "releaseYear": "2006",
-      "streamingService": [
-        {
-          "logoPath": "https://image.tmdb.org/t/p/w500/zxrVdFjIjLqkfnwyghnfywTn3Lh.jpg",
-          "providerName": "Hulu"
-        },
-        {..},
-        {..}
-      ],
-      "posterUrl": "https://image.tmdb.org/t/p/w500/k3RbNzPEPW0cmkfkn1xVCTk3Qde.jpg",
-      "genres": [
-        "Comedy"
-      ],
-      "rating": 7.45,
-      "summary": "Liz Lemon, the head writer...",
-      "mediaType": "tv",
-      "recommendedBy": [
-        {
-          "id": "2",
-          "username": "martha_stewart",
-          "avatarUrl": "https://cdn-icons-png.flaticon.com/512/3940/3940448.png"
-        },
-        {..},
-        {..}
-      ]
-    }
-  }
 }
 ```
 </details>
-
-- ### Recommendations
-<details close>
-
-<summary>Create New Recommendation</summary>
-<br>
-Request Body: <br>
-
-```
-  mutation {
-    createRecommendation (
-        tmdbId: 4608,
-        recommenderId: 1,
-        recommendeeId: 2,
-        mediaType: "tv"
-    )
-    {
-        id
-        tmdbId
-        recommenderId
-        recommendeeId
-    }
-}
-```
-
-JSON Response Example: 
-```json 
-  {
-  "data": {
-    "createRecommendation": {
-      "id": "30",
-      "tmdbId": 4608,
-      "recommenderId": 1,
-      "recommendeeId": 2
-    }
-  }
-}
-```
-</details>
-
-- ### Watchlist Items
-<details close>
-
-<summary>Create New Watchlist Item</summary>
-<br>
-Request Body: <br>
-
-```
-  mutation {
-    createWatchlistItem (
-        tmdbId: 4608,
-        userId: 1,
-        mediaType: "tv"
-    )
-    {
-        id
-        tmdbId
-        userId
-    }
-}
-```
-
-JSON Response Example: 
-```json 
-  {
-  "data": {
-    "createWatchlistItem": {
-      "id": "83",
-      "tmdbId": 4608,
-      "userId": 1
-    }
-  }
-}
-```
-</details>
-
-<details close>
-
-<summary>Delete Watchlist Item</summary>
-<br>
-Request Body: <br>
-
-```
-  mutation {
-    deleteWatchlistItem (
-        id: 83 )
-    {
-        id
-    }
-}
-```
-
-JSON Response Example: 
-```json 
-  {
-  "data": {
-    "deleteWatchlistItem": {
-      "id": "83"
-    }
-  }
-}
-```
-</details>
-
-
-## Schema
-
 
 ## Gems
 - [pry](https://github.com/pry/pry)
@@ -406,13 +203,10 @@ JSON Response Example:
 - [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers)
 - [jsonapi-serializer](https://github.com/jsonapi-serializer/jsonapi-serializer)
 
-
-
-
 ## Known Issues/Future Goals
 Future features could include:
-- Ability to add other users as friends.
-- Ability to leave individual reviews on shows/movies.
-- Additional recommendations based on popularity or at random.
+- More robust testing
+- Ability to view and manage customers
+
 
 
