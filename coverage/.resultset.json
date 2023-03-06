@@ -270,6 +270,11 @@
         "lines": [
           1,
           1,
+          1,
+          1,
+          null,
+          null,
+          1,
           0,
           0,
           0,
@@ -284,12 +289,9 @@
           null,
           null,
           1,
-          1,
-          1,
-          1,
-          null,
           0,
-          null,
+          0,
+          0,
           null,
           null,
           null,
@@ -305,8 +307,16 @@
           1,
           null
         ]
+      },
+      "/Users/madelinemauser/turing_work/4mod/take_home/take_home/app/serializers/subscription_serializer.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
       }
     },
-    "timestamp": 1678129453
+    "timestamp": 1678130880
   }
 }

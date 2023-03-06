@@ -19,7 +19,6 @@ RSpec.describe "Get Customer Subscriptions", type: :request do
   end
   describe "GET /api/v1/customers/<id>/subscriptions" do
     it "Retrieves all subscriptions for a customer" do
-      @subscription_1.status = 'cancelled'
 
       get "/api/v1/customers/#{@customer_1.id}/subscriptions"
 
@@ -37,9 +36,10 @@ RSpec.describe "Get Customer Subscriptions", type: :request do
       expect(returned_subscriptions[:data].first[:attributes][:title]).to eq(@subscription_1.title)
       expect(returned_subscriptions[:data].first[:attributes][:price]).to eq(@subscription_1.price)
       expect(returned_subscriptions[:data].first[:attributes][:frequency]).to eq(@subscription_1.frequency)
+      expect(returned_subscriptions[:data].first[:attributes][:status]).to eq(@subscription_1.status)
       expect(returned_subscriptions[:data].first[:attributes][:created_at].to_date).to eq(@subscription_1.created_at.to_date)
       expect(returned_subscriptions[:data].first[:attributes][:teas].length).to eq(2)
-      expect(returned_subscriptions[:data].first[:attributes][:teas].first[:id]).to eq(@tea_1.id.to_s)
+      expect(returned_subscriptions[:data].first[:attributes][:teas].first[:id]).to eq(@tea_1.id)
     end
   end
 end
