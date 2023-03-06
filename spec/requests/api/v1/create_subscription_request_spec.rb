@@ -6,11 +6,10 @@ RSpec.describe "Create Subscription", type: :request do
     @tea_1 = Tea.new(title: 'Spicy Chai', description: 'Extra spicy with cinnamon.', temperature: 212, brew_time: 4)
     @tea_2 = Tea.new(title: 'Uncommon Chai', description: 'Uses a secret blend of spices.', temperature: 200, brew_time: 3)
   end
-  describe "POST /api/v1/subscription" do
+  describe "POST /api/v1/customers/#{@customer_1.id}/subscriptions" do
     it "successfully creates a subscription with teas" do
-      post '/api/v1/subscription', params: {
+      post "/api/v1/customers/#{@customer_1.id}/subscriptions", params: {
         subscription: {
-          customer_id: @customer_1.id,
           title: 'Chai Delight',
           price: 20,
           frequency: 3
