@@ -36,6 +36,7 @@ group :development, :test do
   gem 'capybara'
   gem 'pry'
   gem 'simplecov'
+  gem 'jsonapi-serializer'
 end
 
 group :development do
