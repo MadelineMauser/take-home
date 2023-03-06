@@ -26,4 +26,20 @@ RSpec.describe "Create Subscription", type: :request do
       expect(Subscription.first.teas).to eq([@tea_1, @tea_2])
     end
   end
+
+  describe 'POST /api/v1/customers/:id/subscriptions sad path' do
+    it 'returns an error message if subscription was not created' do
+      post "/api/v1/customers/#{@customer_1.id}/subscriptions", params: {
+        subscription: {
+          title: 'Chai Delight',
+          frequency: 3
+        },
+        tea_ids: [@tea_1.id, @tea_2.id]
+      }
+
+      expect(response).to have_http_status(400)
+      expect(JSON.parse(response.body, symbolize_names: true)).to have_key(:error)
+      expect(JSON.parse(response.body, symbolize_names: true)[:error]).to eq("Price can't be blank")
+    end
+  end
 end
