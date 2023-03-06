@@ -21,7 +21,7 @@ The tables and their attributes are based off of the guidelines given in the pro
 
 ## Schema
 
-
+<img width="877" alt="Screen Shot 2023-03-06 at 3 27 59 PM" src="https://user-images.githubusercontent.com/106927896/223265482-fe86ab2b-effe-47d2-8549-713a01b3b015.png">
 
 ## Setup
 This application uses Ruby 2.7.2 and Rails 5.2.8.1
@@ -108,7 +108,8 @@ JSON Response on Success:
 ```json 
 {
     "message": "Subscription cancelled"
-}
+}<img width="877" alt="Screen Shot 2023-03-06 at 3 27 59 PM" src="https://user-images.githubusercontent.com/106927896/223266116-ef8fd9d5-1e03-4172-bbb6-d3a3a8f52c07.png">
+
 ```
 </details>
 
