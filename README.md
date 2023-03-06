@@ -40,7 +40,7 @@ This API was created with REST in mind.
 <details close>
 <summary>This endpoint takes parameters passed through the request body in order to create a new tea subscription for a given customer. Associations between the new subscription and teas are created based on the IDs in the `tea_ids` array.</summary>
 <br>
-Request: ```POST '/api/v1/customers/{customer_id}/subscriptions'```
+Request: POST '/api/v1/customers/{customer_id}/subscriptions'
 <br>
 Request Body:
 <br>
@@ -101,7 +101,7 @@ JSON Response Example:
 <summary>Calling this endpoints updates the provided subscription's status attribute to 'cancelled.' No records are deleted.</summary>
 <br>
 
-Request: ```PATCH 'api/v1/subscriptions/{subscription_id}/cancel'```
+Request: PATCH 'api/v1/subscriptions/{subscription_id}/cancel'
 <br>
 
 JSON Response on Success: 
@@ -117,7 +117,7 @@ JSON Response on Success:
 
 <summary>Querying this endpoint will return all subscriptions of the specified customer, including cancelled subscriptions. The subscription attributes contain an array that provides all associated teas.</summary>
 <br>
-Request: ```GET 'api/v1/customers/{customer_id}/subscriptions'```
+Request: GET 'api/v1/customers/{customer_id}/subscriptions'
 <br>
 
 JSON Response Example: 
