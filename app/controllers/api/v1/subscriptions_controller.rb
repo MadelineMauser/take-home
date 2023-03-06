@@ -12,6 +12,12 @@ class Api::V1::SubscriptionsController < ApplicationController
       render json: {error: new_subscription.errors.full_messages.join(", ")}, status: 400
     end
   end
+
+  def cancel
+    subscription = Subscription.find(params[:id])
+    subscription.update(status: 'cancelled')
+    render json: {message: 'Subscription cancelled'}, status: 200
+  end  
 end
 
 private 
